@@ -3,21 +3,19 @@ pub fn run(input: &str) -> String {
 }
 
 fn part1(input: &str) -> String {
-    let str_nums = input.split("\n");
-    let mut inc_cnt = 0;
-    let mut prev = 0;
+    let nums = input
+        .split("\n")
+        .map(|x| x.parse::<i32>().unwrap())
+        .collect::<Vec<i32>>();
 
-    for (i, s) in str_nums.enumerate() {
-        let n = s.parse::<i32>().unwrap();
-        if i == 0 {
-            prev = n;
-            continue;
-        }
+    let mut inc_cnt = 0;
+    let mut prev: i32 = *nums.first().unwrap();
+    for n in nums {
         if n > prev {
             inc_cnt += 1;
         }
         prev = n;
     }
 
-    String::from("depth changed ") + &inc_cnt.to_string() + " times"
+    format!("depth changed {} times", inc_cnt)
 }
