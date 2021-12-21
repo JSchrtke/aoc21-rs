@@ -34,22 +34,23 @@ fn count_increments(nums: Vec<i32>) -> i32 {
 
 fn part2(input: &str) -> i32 {
     let nums = nums_from_input(input);
-    let averages = sliding_average(nums, 3);
+    let averages = sliding_avg(nums, 3);
 
     count_increments(averages)
 }
 
-fn sliding_average(values: Vec<i32>, win_size: usize) -> Vec<i32> {
+fn sliding_avg(values: Vec<i32>, win_size: usize) -> Vec<i32> {
     if win_size >= values.len() {
         return values;
     }
 
     let mut avgs = Vec::new();
     for i in 0..values.len() - 2 {
-        for _j in 0..win_size {
-            let a = values[i] + values[i + 1] + values[i + 2];
-            avgs.push(a as i32)
+        let mut a: i32 = 0;
+        for j in 0..win_size {
+            a += values[i + j];
         }
+        avgs.push(a as i32);
     }
 
     avgs
