@@ -1,6 +1,6 @@
 pub fn run(input: &str) -> String {
     format!(
-        "depth changed {} individual times and {} times on average",
+        "[day 1] Depth changed {} individual times and {} times on average",
         part1(input),
         part2(input)
     )
