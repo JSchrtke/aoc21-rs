@@ -3,32 +3,20 @@ pub fn run(input: &str) -> String {
 }
 
 fn part1(input: &str) -> String {
-    let tmp = input.replace("\n", " ");
-    let clean_input = tmp.split(" ");
-
-    let mut directions: Vec<String> = Vec::new();
-    let mut values: Vec<i32> = Vec::new();
-
-    for (i, s) in clean_input.enumerate() {
-        if i % 2 == 0 {
-            directions.push(s.to_string());
-        } else {
-            values.push(s.parse::<i32>().unwrap());
-        }
-    }
-
     let mut x_pos = 0;
     let mut y_pos = 0;
 
-    assert!(directions.len() == values.len());
-    for (i, dir) in directions.iter().enumerate() {
-        match dir.as_str() {
-            "forward" => x_pos += values.iter().nth(i).unwrap(),
-            "up" => y_pos -= values.iter().nth(i).unwrap(),
-            "down" => y_pos += values.iter().nth(i).unwrap(),
+    input.split("\n").for_each(|s| {
+        let mut it = s.split(" ");
+        let s = it.next().unwrap();
+        let n = it.next().unwrap().parse::<i32>().unwrap();
+        match s {
+            "forward" => x_pos += n,
+            "up" => y_pos -= n,
+            "down" => y_pos += n,
             _ => panic!("Invalid direction"),
         }
-    }
+    });
 
     format!("[day 2] Final location is {}", x_pos * y_pos)
 }
