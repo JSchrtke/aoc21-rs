@@ -1,5 +1,5 @@
 pub fn run(input: &str) -> String {
-    format!("[day 3] power consumption is {}", day3(input))
+    format!("power consumption is {}", day3(input))
 }
 
 fn day3(input: &str) -> i32 {
@@ -19,7 +19,7 @@ fn day3(input: &str) -> i32 {
         }
     }
 
-    let mut gamma_rate:i32 = 0;
+    let mut gamma_rate: i32 = 0;
     for n in counts {
         gamma_rate = gamma_rate << 1;
         if n > num_cnt / 2 {
