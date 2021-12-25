@@ -2,6 +2,9 @@ pub fn run(input: &str) -> String {
     part2(input)
 }
 
+// Since this is only used in part one, and can't easily be refactored to extract the duplicated
+// code, the warning about dead code is ignored here.
+#[allow(dead_code)]
 fn part1(input: &str) -> String {
     let mut x_pos = 0;
     let mut y_pos = 0;
