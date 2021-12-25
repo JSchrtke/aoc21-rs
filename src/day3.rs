@@ -31,9 +31,7 @@ fn day3(input: &str) -> i32 {
         }
     }
 
-    let bit_cnt = num_len as u32;
-    const BASE: i32 = 2;
-    let epsilon_mask = BASE.pow(bit_cnt) - 1;
+    let epsilon_mask = 2i32.pow(num_len as u32) - 1;
     let epsilon_rate = !gamma_rate & epsilon_mask;
 
     gamma_rate * epsilon_rate
