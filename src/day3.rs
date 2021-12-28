@@ -40,37 +40,39 @@ fn part1(input: &str) -> i32 {
 }
 
 fn part2(input: &str) -> String {
-    let n = f(input);
-    format!("{:?}", n)
+    let o2 = o2_gen_rating(input);
+    format!("o2 rating is {}", o2)
 }
 
-fn f(input: &str) -> &str {
-    let mut num_strs: Vec<&str> = input.split("\n").collect();
-    let bit_count = num_strs.first().unwrap().len();
+fn o2_gen_rating(input: &str) -> u32 {
+    let num_strs: Vec<&str> = input.split("\n").collect();
+    let bit_cnt = num_strs.first().unwrap().len();
 
-    for bit_idx in 0..bit_count {
-        if num_strs.len() == 1 {
-            break;
+    let mut nums: Vec<u32> = num_strs
+        .iter()
+        .map(|s| u32::from_str_radix(s, 2).unwrap())
+        .collect();
+
+    let mut mask = 2u32.pow(bit_cnt as u32 - 1);
+
+    while nums.len() > 1 {
+        let high_cnts = nums.iter().filter(|&n| n & mask == mask).count();
+        let mut most_common = 0;
+        if high_cnts * 2 >= nums.len() {
+            most_common = 1;
         }
 
-        let mut most_common_bit: char = '0';
-        let mut high_count = 0;
-        for s in &num_strs {
-            let x = s;
-            let y = x.chars().nth(bit_idx).unwrap();
-            if y.eq(&'1') {
-                high_count += 1
-            };
-            if high_count * 2 >= num_strs.len() {
-                most_common_bit = '1';
-                break;
-            }
+        let mut filter = 0;
+        if most_common == 1 {
+            filter = mask
         }
-        num_strs = num_strs
-            .into_iter()
-            .filter(|s| s.chars().nth(bit_idx).unwrap().eq(&most_common_bit))
-            .collect();
+
+        nums = nums.into_iter().filter(|n| (n & mask) == filter).collect();
+
+        mask = mask >> 1;
     }
 
-    num_strs.first().unwrap()
+    let res = nums.first().unwrap();
+
+    *res
 }
