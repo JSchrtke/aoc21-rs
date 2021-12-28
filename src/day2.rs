@@ -44,5 +44,5 @@ fn part2(input: &str) -> String {
         }
     });
 
-    format!("[day 2] Final location is {}", x_pos * y_pos)
+    format!("Final location is {}", x_pos * y_pos)
 }
