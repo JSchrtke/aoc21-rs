@@ -7,51 +7,51 @@ pub fn run(input: &str) -> String {
 }
 
 fn part1(input: &str) -> i32 {
-    let nums = nums_from_input(input);
+    let numbers = numbers_from_input(input);
 
-    count_increments(nums)
+    count_increments(numbers)
 }
 
-fn nums_from_input(input: &str) -> Vec<i32> {
+fn numbers_from_input(input: &str) -> Vec<i32> {
     input
         .split("\n")
         .map(|x| x.parse::<i32>().unwrap())
         .collect::<Vec<i32>>()
 }
 
-fn count_increments(nums: Vec<i32>) -> i32 {
-    let mut inc_cnt = 0;
-    let mut prev: i32 = *nums.first().unwrap();
-    for n in nums {
-        if n > prev {
-            inc_cnt += 1;
+fn count_increments(numbers: Vec<i32>) -> i32 {
+    let mut increment_count = 0;
+    let mut previous_n: i32 = *numbers.first().unwrap();
+    for n in numbers {
+        if n > previous_n {
+            increment_count += 1;
         }
-        prev = n;
+        previous_n = n;
     }
 
-    inc_cnt
+    increment_count
 }
 
 fn part2(input: &str) -> i32 {
-    let nums = nums_from_input(input);
-    let averages = sliding_avg(nums, 3);
+    let numbers = numbers_from_input(input);
+    let averages = sliding_average(numbers, 3);
 
     count_increments(averages)
 }
 
-fn sliding_avg(values: Vec<i32>, win_size: usize) -> Vec<i32> {
-    if win_size >= values.len() {
+fn sliding_average(values: Vec<i32>, window_size: usize) -> Vec<i32> {
+    if window_size >= values.len() {
         return values;
     }
 
-    let mut avgs = Vec::new();
+    let mut averages = Vec::new();
     for i in 0..values.len() - 2 {
-        let mut a: i32 = 0;
-        for j in 0..win_size {
-            a += values[i + j];
+        let mut average: i32 = 0;
+        for j in 0..window_size {
+            average += values[i + j];
         }
-        avgs.push(a as i32);
+        averages.push(average as i32);
     }
 
-    avgs
+    averages
 }
