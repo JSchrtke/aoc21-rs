@@ -1,5 +1,5 @@
 pub fn run(input: &str) -> String {
-    let depths = input.split('\n').map(|s| s.parse().unwrap()).collect();
+    let depths: Vec<i32> = input.split('\n').map(|s| s.parse().unwrap()).collect();
 
     let d = count_increments(&depths);
     assert_eq!(1681, d);
@@ -13,7 +13,7 @@ pub fn run(input: &str) -> String {
     )
 }
 
-fn average_depth_increases(numbers: &Vec<i32>) -> i32 {
+fn average_depth_increases(numbers: &[i32]) -> i32 {
     let mut averages = Vec::new();
     for i in 0..numbers.len() - 2 {
         let mut average = 0;
@@ -26,7 +26,7 @@ fn average_depth_increases(numbers: &Vec<i32>) -> i32 {
     count_increments(&averages)
 }
 
-fn count_increments(numbers: &Vec<i32>) -> i32 {
+fn count_increments(numbers: &[i32]) -> i32 {
     let mut increment_count = 0;
     let mut previous_n = numbers.first().unwrap();
     for n in numbers {

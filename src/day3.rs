@@ -10,7 +10,7 @@ pub fn run(input: &str) -> String {
     format!("power consumption is {}\n\tlife support rating is {}", p, l)
 }
 
-fn power_consumption(number_strings: &Vec<&str>) -> i32 {
+fn power_consumption(number_strings: &[&str]) -> i32 {
     let number_count = number_strings.len();
     let bit_count = number_strings.first().unwrap().len();
 
@@ -46,11 +46,11 @@ fn power_consumption(number_strings: &Vec<&str>) -> i32 {
     return power_consumption;
 }
 
-fn life_support_rating(number_strings: &Vec<&str>) -> u32 {
+fn life_support_rating(number_strings: &[&str]) -> u32 {
     o2_gen_rating(number_strings) * co2_scrubber_rating(number_strings)
 }
 
-fn o2_gen_rating(number_strings: &Vec<&str>) -> u32 {
+fn o2_gen_rating(number_strings: &[&str]) -> u32 {
     let bit_count = number_strings.first().unwrap().len();
 
     let mut numbers: Vec<u32> = number_strings
@@ -85,7 +85,7 @@ fn o2_gen_rating(number_strings: &Vec<&str>) -> u32 {
     return *o2;
 }
 
-fn co2_scrubber_rating(number_strings: &Vec<&str>) -> u32 {
+fn co2_scrubber_rating(number_strings: &[&str]) -> u32 {
     let mut numbers: Vec<u32> = number_strings
         .iter()
         .map(|s| u32::from_str_radix(s, 2).expect("not a valid binary number"))
