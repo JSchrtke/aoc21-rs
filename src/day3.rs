@@ -30,7 +30,7 @@ fn power_consumption(number_strings: &[&str]) -> i32 {
 
     let mut gamma_rate: i32 = 0;
     for n in high_counts {
-        gamma_rate = gamma_rate << 1;
+        gamma_rate <<= 1;
 
         match n.cmp(&(number_count / 2)) {
             Ordering::Greater => gamma_rate += 1,
