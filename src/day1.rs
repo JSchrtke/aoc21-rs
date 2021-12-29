@@ -36,5 +36,5 @@ fn count_increments(numbers: &[i32]) -> i32 {
         previous_n = n;
     }
 
-    return increment_count;
+    increment_count
 }

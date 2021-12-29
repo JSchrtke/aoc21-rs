@@ -41,9 +41,7 @@ fn power_consumption(number_strings: &[&str]) -> i32 {
     let epsilon_mask = 2i32.pow(bit_count as u32) - 1;
     let epsilon_rate = !gamma_rate & epsilon_mask;
 
-    let power_consumption = gamma_rate * epsilon_rate;
-
-    return power_consumption;
+    gamma_rate * epsilon_rate
 }
 
 fn life_support_rating(number_strings: &[&str]) -> u32 {
@@ -82,7 +80,7 @@ fn o2_gen_rating(number_strings: &[&str]) -> u32 {
 
     let o2 = numbers.first().unwrap();
 
-    return *o2;
+    *o2
 }
 
 fn co2_scrubber_rating(number_strings: &[&str]) -> u32 {
