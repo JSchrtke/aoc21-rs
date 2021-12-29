@@ -1,5 +1,5 @@
 pub fn run(input: &str) -> String {
-    let depths = input.split("\n").map(|s| s.parse().unwrap()).collect();
+    let depths = input.split('\n').map(|s| s.parse().unwrap()).collect();
 
     let d = count_increments(&depths);
     assert_eq!(1681, d);

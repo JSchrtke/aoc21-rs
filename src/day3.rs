@@ -1,5 +1,5 @@
 pub fn run(input: &str) -> String {
-    let number_strings: Vec<&str> = input.split("\n").collect();
+    let number_strings: Vec<&str> = input.split('\n').collect();
 
     let p = power_consumption(&number_strings);
     assert_eq!(4139586, p);

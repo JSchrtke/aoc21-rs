@@ -9,8 +9,8 @@ fn part1(input: &str) -> String {
     let mut x = 0;
     let mut y = 0;
 
-    input.split("\n").for_each(|s| {
-        let mut iter = s.split(" ");
+    input.split('\n').for_each(|s| {
+        let mut iter = s.split(' ');
         let s = iter.next().unwrap();
         let n = iter.next().unwrap().parse::<i32>().unwrap();
         match s {
@@ -29,8 +29,8 @@ fn part2(input: &str) -> String {
     let mut y = 0;
     let mut aim = 0;
 
-    input.split("\n").for_each(|s| {
-        let mut iter = s.split(" ");
+    input.split('\n').for_each(|s| {
+        let mut iter = s.split(' ');
         let s = iter.next().unwrap();
         let n = iter.next().unwrap().parse::<i32>().unwrap();
         match s {
