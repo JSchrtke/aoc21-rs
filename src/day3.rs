@@ -1,3 +1,5 @@
+use std::cmp::Ordering;
+
 pub fn run(input: &str) -> String {
     let number_strings: Vec<&str> = input.split('\n').collect();
 
@@ -29,12 +31,11 @@ fn power_consumption(number_strings: &[&str]) -> i32 {
     let mut gamma_rate: i32 = 0;
     for n in high_counts {
         gamma_rate = gamma_rate << 1;
-        if n > number_count / 2 {
-            gamma_rate += 1;
-        } else if n < number_count / 2 {
-            continue;
-        } else {
-            panic!("this should not happen");
+
+        match n.cmp(&(number_count / 2)) {
+            Ordering::Greater => gamma_rate += 1,
+            Ordering::Less => continue,
+            Ordering::Equal => panic!("this should not happen"),
         }
     }
 
