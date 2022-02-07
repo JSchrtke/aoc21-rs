@@ -46,9 +46,7 @@ fn parse_input(input: &str) -> (Vec<usize>, Vec<usize>) {
 }
 
 fn final_score(draw_numbers: Vec<usize>, fields: Vec<usize>) -> Option<usize> {
-    if !valid_fields(&fields) {
-        return None;
-    }
+    valid_fields_or_panic(&fields);
 
     let mut marks: Vec<usize> = Vec::new();
     for n in draw_numbers {
@@ -110,9 +108,13 @@ fn winning_board_score(marks: &[usize], fields: &[usize]) -> Option<usize> {
     Some(score)
 }
 
-fn valid_fields(fields: &[usize]) -> bool {
+fn valid_fields_or_panic(fields: &[usize]) {
     if fields.len() % BOARD_SIZE != 0 {
-        return false;
+        panic!(
+            "field length must be a multiple of {}, but was {}",
+            BOARD_SIZE,
+            fields.len()
+        );
     }
 
     let boards = fields.chunks(BOARD_SIZE).map(|chunk| chunk.to_vec());
@@ -122,13 +124,11 @@ fn valid_fields(fields: &[usize]) -> bool {
         let mut prev = board.first().unwrap();
         for f in board.get(1..).unwrap() {
             if f == prev {
-                return false;
+                panic!("boards must not have duplicate values");
             }
             prev = f;
         }
     }
-
-    true
 }
 
 fn winning_column_indices(marks: &[usize]) -> Option<Vec<usize>> {
@@ -222,7 +222,7 @@ fn count_consecutives(values: &[usize]) -> usize {
 mod tests {
     use super::final_score;
     use super::parse_input;
-    use super::valid_fields;
+    use super::valid_fields_or_panic;
     use super::winning_board_score;
 
     #[test]
@@ -290,30 +290,19 @@ mod tests {
     }
 
     #[test]
-    fn validating_fields() {
-        // NOTE these are 2 distinct bingo boards. Each one has 25 fields, since it is 5x5 fields.
-        // within those boards, no duplicates are allowed. However, the array of all fields on all
-        // boards can have duplicate values, as long as they are not on the same board.
+    #[should_panic(expected = "boards must not have duplicate values")]
+    fn validating_fields_with_duplicates_should_panic() {
         let fields_with_duplicates = vec![
             1, 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24,
             25, 1, 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23,
             24, 25,
         ];
-        assert!(
-            !valid_fields(&fields_with_duplicates),
-            "assert: fields_with_duplicates is invalid"
-        );
+        valid_fields_or_panic(&fields_with_duplicates);
+    }
 
-        let fields_with_duplicates_on_different_boards = vec![
-            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24,
-            25, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23,
-            24, 25,
-        ];
-        assert!(
-            valid_fields(&fields_with_duplicates_on_different_boards),
-            "assert: fields_with_duplicates_on_different_boards is valid"
-        );
-
+    #[test]
+    #[should_panic(expected = "field length must be a multiple of 25, but was 49")]
+    fn validating_fields_with_too_few_fields_panics() {
         // To contain a valid number of bingo boards, the array of all fields must be a multiple of 25
         // exactly.
         let too_few_fields = vec![
@@ -321,29 +310,38 @@ mod tests {
             25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46,
             47, 48, 49,
         ];
-        assert!(
-            !valid_fields(&too_few_fields),
-            "assert: too_few_fields is invalid"
-        );
+        valid_fields_or_panic(&too_few_fields);
+    }
 
+    #[test]
+    #[should_panic(expected = "field length must be a multiple of 25, but was 51")]
+    fn validating_fields_with_too_many_fields_panics() {
         let too_many_fields = vec![
             1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24,
             25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46,
             47, 48, 49, 50, 51,
         ];
-        assert!(
-            !valid_fields(&too_many_fields),
-            "assert: too_many_fields is invalid"
-        );
+        valid_fields_or_panic(&too_many_fields)
+    }
+
+    #[test]
+    fn validating_fields() {
+        // NOTE these are 2 distinct bingo boards. Each one has 25 fields, since it is 5x5 fields.
+        // within those boards, no duplicates are allowed. However, the array of all fields on all
+        // boards can have duplicate values, as long as they are not on the same board.
+        let fields_with_duplicates_on_different_boards = vec![
+            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24,
+            25, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23,
+            24, 25,
+        ];
+        valid_fields_or_panic(&fields_with_duplicates_on_different_boards);
+
         let duplicate_at_board_transition = vec![
             1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24,
             25, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45,
             46, 47, 48, 49,
         ];
-        assert!(
-            valid_fields(&duplicate_at_board_transition),
-            "assert: 'duplicate_at_board_transition' is valid"
-        )
+        valid_fields_or_panic(&duplicate_at_board_transition);
     }
 
     #[test]
