@@ -76,18 +76,15 @@ fn winning_board_score(marks: &[usize], fields: &[usize]) -> Option<usize> {
         return None;
     }
 
-    let winning_indices = match winning_column_indices(marks) {
-        Some(indices) => indices,
-        None => match winning_row_indices(marks) {
-            Some(indices) => indices,
-            None => return None,
-        },
-    };
+    let winning_indices = winning_column_indices(marks).or_else(|| winning_row_indices(marks));
 
-    let winning_board_index = match winning_indices.first() {
-        Some(index) => index / BOARD_SIZE,
-        None => panic!("got empty winning indices!"),
-    };
+    winning_indices.as_ref()?;
+
+    let winning_board_index = winning_indices
+        .unwrap() // unwrap here is safe, because we would have returned already if it was 'None'
+        .first()
+        .expect("got empty winning indices!")
+        / BOARD_SIZE;
 
     let start = winning_board_index * BOARD_SIZE;
     let end = winning_board_index * BOARD_SIZE + BOARD_SIZE;
