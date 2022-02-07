@@ -8,7 +8,7 @@ const BOARD_SIZE: usize = BOARD_SIDE_LEN * BOARD_SIDE_LEN;
 pub fn run(input: &str) -> String {
     let (draw_numbers, fields) = parse_input(input);
 
-    let score = final_score(draw_numbers, fields).expect("Found no winning score!");
+    let score = final_score(draw_numbers, fields);
 
     format!("winning score is {}", score)
 }
@@ -45,7 +45,7 @@ fn parse_input(input: &str) -> (Vec<usize>, Vec<usize>) {
     }
 }
 
-fn final_score(draw_numbers: Vec<usize>, fields: Vec<usize>) -> Option<usize> {
+fn final_score(draw_numbers: Vec<usize>, fields: Vec<usize>) -> usize {
     valid_fields_or_panic(&fields);
 
     let mut marks: Vec<usize> = Vec::new();
@@ -63,12 +63,12 @@ fn final_score(draw_numbers: Vec<usize>, fields: Vec<usize>) -> Option<usize> {
         marks.sort_unstable();
 
         match winning_board_score(&marks, &fields) {
-            Some(score) => return Some(n * score),
+            Some(score) => return n * score,
             None => continue,
         };
     }
 
-    None
+    panic!("Could not find a winning board!");
 }
 
 fn winning_board_score(marks: &[usize], fields: &[usize]) -> Option<usize> {
@@ -247,8 +247,7 @@ mod tests {
     #[test]
     fn with_sample_input() {
         let (draw_numbers, fields) = parse_input(crate::input::DAY_4_SAMPLE);
-        let winning_score =
-            final_score(draw_numbers, fields).expect("expected a winning row, but got None");
+        let winning_score = final_score(draw_numbers, fields);
         assert_eq!(4512, winning_score);
     }
 
@@ -283,8 +282,7 @@ mod tests {
         // number. In this case, that is 615 * 51 = 31365
         let expected_score = 615 * 51;
 
-        let score =
-            final_score(draw_numbers, fields).expect("expected a winning score, but got None");
+        let score = final_score(draw_numbers, fields);
 
         assert_eq!(expected_score, score);
     }
