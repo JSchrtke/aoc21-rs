@@ -94,11 +94,10 @@ fn winning_board_score(marks: &[usize], fields: &[usize]) -> Option<usize> {
         .iter()
         .enumerate()
         .map(|(i, &x)| {
-            if marks.contains(&(i + winning_board_index * BOARD_SIZE)) {
-                0
-            } else {
-                x
-            }
+            marks
+                .contains(&(i + winning_board_index * BOARD_SIZE))
+                .then(|| 0)
+                .unwrap_or(x)
         })
         .sum();
 
