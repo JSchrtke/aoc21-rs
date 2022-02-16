@@ -20,7 +20,6 @@ fn parse_input(input: &str) -> (Vec<usize>, Vec<usize>) {
         .next()
         .expect("there are no lines in the input!")
         .split(',')
-        // TODO This match should probably be extracted to a function
         .map(to_int_or_panic)
         .collect();
 
@@ -78,6 +77,7 @@ fn winning_board_score(marks: &[usize], fields: &[usize]) -> Option<usize> {
 
     let winning_indices = winning_column_indices(marks).or_else(|| winning_row_indices(marks));
 
+    // If there are no winning indices,  return early with 'None'
     winning_indices.as_ref()?;
 
     let winning_board_index = winning_indices
