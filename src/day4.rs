@@ -170,7 +170,7 @@ fn winning_row_indices(marks: &[usize]) -> Option<Vec<usize>> {
                 return None;
             }
             let consecutive_count = count_consecutives(marks);
-            if consecutive_count == 4 {
+            if consecutive_count == BOARD_SIDE_LEN - 1 {
                 Some(marks.to_vec())
             } else {
                 None
@@ -189,7 +189,7 @@ fn winning_row_indices(marks: &[usize]) -> Option<Vec<usize>> {
 
                     let consecutive_count = count_consecutives(current_row_indices);
 
-                    if consecutive_count == 4 {
+                    if consecutive_count == BOARD_SIDE_LEN - 1 {
                         return Some(current_row_indices.to_vec());
                     }
                 }
