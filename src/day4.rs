@@ -83,7 +83,7 @@ fn winning_board_score(marks: &[usize], fields: &[usize]) -> Option<usize> {
     let winning_board_index = winning_indices
         .unwrap() // unwrap here is safe, because we would have returned already if it was 'None'
         .first()
-        .expect("got empty winning indices!")
+        .unwrap()
         / BOARD_SIZE;
 
     let start = winning_board_index * BOARD_SIZE;
@@ -133,28 +133,29 @@ fn winning_column_indices(marks: &[usize]) -> Option<Vec<usize>> {
     for (i, m) in marks.iter().enumerate() {
         // The first of the winning marks has to be in the first row of the board, since it is the
         // start of a column. This means that it has to be smaller than the width of the board.
-        if m < &BOARD_SIDE_LEN {
-            // TODO: this if can be inverted
-            if i > marks.len() - BOARD_SIDE_LEN {
-                // Since there are less than 5 marks left, including the current one, there
-                // can't be a full winning column, so we can stop looking for it here.
-                break;
-            }
+        if m > &BOARD_SIDE_LEN {
+            break;
+        }
 
-            let mut prev = m;
-            // NOTE the i + 1 has to always exist at this point, otherwise we would have broken
-            // out of the loop by now.
-            let rest = marks.get(i + 1..).unwrap();
-            let mut winning_column_marks = Vec::new();
-            winning_column_marks.push(*m);
-            for curr in rest {
-                if curr - prev == BOARD_SIDE_LEN {
-                    winning_column_marks.push(*curr);
-                    prev = curr;
-                }
-                if winning_column_marks.len() == BOARD_SIDE_LEN {
-                    return Some(winning_column_marks);
-                }
+        if i > marks.len() - BOARD_SIDE_LEN {
+            // Since there are less than 5 marks left, including the current one, there
+            // can't be a full winning column, so we can stop looking for it here.
+            break;
+        }
+
+        let mut prev = m;
+        // NOTE the i + 1 has to always exist at this point, otherwise we would have broken
+        // out of the loop by now.
+        let rest = marks.get(i + 1..).unwrap();
+        let mut winning_column_marks = Vec::new();
+        winning_column_marks.push(*m);
+        for curr in rest {
+            if curr - prev == BOARD_SIDE_LEN {
+                winning_column_marks.push(*curr);
+                prev = curr;
+            }
+            if winning_column_marks.len() == BOARD_SIDE_LEN {
+                return Some(winning_column_marks);
             }
         }
     }
