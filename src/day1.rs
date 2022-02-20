@@ -2,10 +2,8 @@ pub fn run(input: &str) -> String {
     let depths: Vec<i32> = input.split('\n').map(|s| s.parse().unwrap()).collect();
 
     let d = count_increments(&depths);
-    assert_eq!(1681, d);
 
     let a = average_depth_increases(&depths);
-    assert_eq!(1704, a);
 
     format!(
         "Depth changed {} individual times and {} times on average",
@@ -37,4 +35,29 @@ fn count_increments(numbers: &[i32]) -> i32 {
     }
 
     increment_count
+}
+
+#[cfg(test)]
+mod tests {
+    use super::run;
+
+    #[test]
+    fn with_sample_input() {
+        let expected = String::from("Depth changed 7 individual times and 5 times on average");
+
+        let actual = run(TEST_INPUT);
+
+        assert_eq!(expected, actual);
+    }
+
+    const TEST_INPUT: &str = "199
+200
+208
+210
+200
+207
+240
+269
+260
+263";
 }
