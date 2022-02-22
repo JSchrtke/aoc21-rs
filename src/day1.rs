@@ -38,7 +38,7 @@ fn count_increments(numbers: &[i32]) -> i32 {
 }
 
 #[cfg(test)]
-mod tests {
+mod test {
     use super::run;
 
     #[test]
